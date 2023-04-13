@@ -14,25 +14,28 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ITEM_HEIGHT = 52;
+// const ITEM_HEIGHT = 52;
 const Import = (props) => {
   // fill out this component
   const [anchorEl, setAnchorEl] = useState(null);
-  const [idNum, setIdNum] = useState(null);
-  
-  const open = Boolean(anchorEl);
+  const [deleteId, setDeleteId] = useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    setIdNum(event.currentTarget.id);
+  // const open = Boolean(anchorEl);
+
+  const handleDelete = () => {
+    props.deleteMake(deleteId);
+    setAnchorEl(null);
+    setDeleteId(null);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClick = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    setDeleteId(id);
+    console.log(id);
   };
 
   return (
-    <TableContainer>
+    <TableContainer sx={{ mt: "15px", mx: "auto", width: "60%" }}>
       <p></p>
       <Button variant="contained" color="primary" onClick={props.fetchMakes}>
         Import
@@ -48,40 +51,25 @@ const Import = (props) => {
         </TableHead>
         <TableBody>
           {props.makes.map((make, id) => (
-            <TableRow key={make.MakeId}>
+            <TableRow key={id}>
               <TableCell>{make.MakeId}</TableCell>
               <TableCell>{make.MakeName}</TableCell>
               <TableCell>
-                <IconButton
-                  aria-label="more"
-                  aria-controls="long-menu"
-                  aria-expanded={open ? "true" : undefined}
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                  id={id}
-                >
-                  <MoreVertIcon />
-                </IconButton>
+                <MoreVertIcon
+                  onClick={(event) => handleClick(event, make.MakeId)}
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <Menu
-        id="simple-menu"
+        // id="simple-menu"
         anchorEl={anchorEl}
-        keepMountedopen={Boolean(anchorEl)}
-        onClose={handleClose}
-        // PaperProps={{
-        //   style: {
-        //     maxHeight: ITEM_HEIGHT * 4.5,
-        //     width: 200,
-        //   },
-        // }}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
       >
-        <MenuItem onClick={handleClose}>
-          <Button onClick={() => props.deleteMake(idNum)}>Delete</Button>
-        </MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </TableContainer>
   );

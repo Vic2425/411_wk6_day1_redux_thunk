@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchMakes: () => dispatch(fetchMakes()),
-    deleteMake: (index) => dispatch(deleteMake(index))
+    deleteMake: (id) => dispatch(deleteMake(id))
   };
 };
 
